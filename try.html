@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abel&family=Charm:wght@400;700&family=Expletus+Sans:ital,wght@0,400..700;1,400..700&family=Kumar+One+Outline&display=swap" rel="stylesheet">
+    <title>Horoscope & Zodiac Checker</title>
+    <style>
+        body {
+            font-family: "Charm", sans-serif;
+            background-image: url('orv.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: #1f1f1f;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1 {
+            text-align: left;
+            margin-left: 60px;
+            margin-top: 50px;
+            color: #f0f0f0;
+        }
+        
+        form {
+            position: relative;
+            font-size: 20px;
+            text-align: center;
+            height: 250px;
+            width: 244px;
+            margin-left: 150px;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #c3c3c3;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label[for="month"]{
+            position: absolute;
+            top: 78px;
+            left: 30px;
+            font-size: 15px;
+            color: #1f1f1f;
+        }
+
+        label[for="day"]{
+            position: absolute;
+            top: 78px;
+            left: 155px;
+            font-size: 15px;
+            color: #1f1f1f;
+        }
+
+        label[for="year"]{
+            position: absolute;
+            top: 78px;
+            left: 210px;
+            font-size: 15px;
+            color: #1f1f1f;
+        }
+        input#month:hover{
+            background-color: #d1d1d1; /* Lighten background on hover */
+        }
+        input#day:hover{
+            background-color: #d1d1d1; /* Lighten background on hover */
+        }
+        input#year:hover{
+            background-color: #d1d1d1; /* Lighten background on hover */
+        }
+        input#month {
+            position: absolute;
+            top: 100px;
+            left: 25px;
+            text-align: center;
+            width: 100px;
+            padding: 5px;
+            font-size: 15px;
+            border: 2px solid #1f1f1f;
+            border-radius: 5px;
+            background-color: #e1e1e1;
+            color: #333;
+        }
+
+        input#day {
+            position:absolute;
+            top: 100px;
+            left: 150px;
+            text-align: center;
+            width: 30px;
+            padding: 5px;
+            font-size: 15px;
+            border: 2px solid #1f1f1f;
+            border-radius: 5px;
+            background-color: #e1e1e1;
+            color: #333;
+        }
+
+        input#year {
+            position:absolute;
+            top: 100px;
+            left: 205px;
+            text-align: center;
+            width: 40px;
+            padding: 5px;
+            font-size: 15px;
+            border: 2px solid #1f1f1f;
+            border-radius: 5px;
+            background-color: #e1e1e1;
+            color: #333;
+        }
+        p{
+            position: absolute;
+            top: 180px;
+            left: 25px;
+            font-size: 15px;
+            color: #1f1f1f;
+            text-align: center;
+            width: 195px;
+            padding: 10px 20px;
+            background-color: #e1e1e1;
+            border-radius: 5px;
+        }
+
+        button {
+            position: absolute;
+            top: 120px;
+            left: 25px;
+            font: inherit;
+            width: 235px;
+            padding: 10px 20px;
+            font-size: 15px;
+            background-color: #1f1f1f;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            background-color: #333; /* Darker background on hover */
+            transform: scale(1.05); /* Slightly enlarge the button */
+            transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+        }
+        
+        button:active {
+            transform: scale(0.95); /* Slightly shrink the button on click */
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Western & Chinese Zodiac Checker</h1>
+    <form onsubmit="return checkZodiac(event)">
+        <label>Enter your Birthdate</label>
+        <label for="month">Month:</label><br>
+        <input type="text" id="month" placeholder="Month" required><br><br>
+
+        <label for="day">Day:</label><br>
+        <input type="number" id="day" placeholder="Day" min="1" max="31" required><br><br>
+
+        <label for="year">Year:</label><br>
+        <input type="number" id="year" placeholder="Year"  required><br><br>
+
+        <button type="submit">CHECK</button>
+        <p id="zodiacResult"><strong>RESULT:</strong></p>
+    </form>
+
+    <script>
+        function checkZodiac(event) {
+            event.preventDefault();
+
+            // Map month names to numbers
+            const monthMap = {
+                january: 1, february: 2, march: 3, april: 4,
+                may: 5, june: 6, july: 7, august: 8,
+                september: 9, october: 10, november: 11, december: 12
+            };
+
+            // Get user inputs
+            let monthInput = document.getElementById("month").value.trim().toLowerCase(); // Convert to lowercase for consistency
+            let month = monthMap[monthInput]; // Convert month name to number
+            let day = parseInt(document.getElementById("day").value);
+            let year = parseInt(document.getElementById("year").value);
+            let zodiacResult = document.getElementById("zodiacResult");
+
+            if (month && day && year) {
+                let zodiac = "";
+
+                if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) {
+                    zodiac = "Aries";
+                } else if ((month === 4 && day >= 20 && day <=30) || (month === 5 && day <= 20)) {
+                    zodiac = "Taurus";
+                } else if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) {
+                    zodiac = "Gemini";
+                } else if ((month === 6 && day >= 21 && day <=30) || (month === 7 && day <= 22)) {
+                    zodiac = "Cancer";
+                } else if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) {
+                    zodiac = "Leo";
+                } else if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) {
+                    zodiac = "Virgo";
+                } else if ((month === 9 && day >= 23  && day <=30) || (month === 10 && day <= 22)) {
+                    zodiac = "Libra";
+                } else if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) {
+                    zodiac = "Scorpio";
+                } else if ((month === 11 && day >= 22  && day <=30) || (month === 12 && day <= 21)) {
+                    zodiac = "Sagittarius";
+                } else if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) {
+                    zodiac = "Capricorn";
+                } else if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) {
+                    zodiac = "Aquarius";
+                } else if ((month === 2 && day >= 19 && day <=28) || (month === 3 && day <= 20)) {
+                    zodiac = "Pisces";
+                }
+
+                else if (month === 2 && day === 29) { // Leap year check
+                    if ((year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)) {
+                        zodiac = "Pisces";
+                    } else {
+                        zodiacResult.innerHTML = "Invalid date: February 29 is not valid in this year.";
+                        return;
+                    }
+
+
+
+                } else {
+                    zodiacResult.innerHTML = "Invalid date. Please check the day and month.";
+                    return;
+                }
+
+
+
+                const animalZodiac = [
+                    "Monkey", "Rooster", "Dog", "Pig", "Rat", "Ox",
+                    "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat"
+                ];
+                let animal = animalZodiac[year % 12];
+
+                zodiacResult.innerHTML = `
+                Zodiac sign is: <strong>${zodiac}</strong> <br>
+                Chinese zodiac animal is: <strong>${animal}</strong>.`;
+            } else {
+                zodiacResult.innerHTML = "Please enter valid values for month, day, and year.";
+            }
+        }
+    </script>
+</body>
+</html>
